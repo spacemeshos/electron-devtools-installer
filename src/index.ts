@@ -86,19 +86,11 @@ const install = (
   const extensionName = IDMap[chromeStoreID];
   let extensionInstalled: boolean;
 
-  // For Electron >=9.
-  if ((session.defaultSession as any).getExtension) {
-    extensionInstalled =
-      !!extensionName &&
-      (session.defaultSession as any)
-        .getAllExtensions()
-        .find((e: { name: string }) => e.name === extensionName);
-  } else {
-    extensionInstalled =
-      !!extensionName &&
-      BrowserWindow.getDevToolsExtensions &&
-      BrowserWindow.getDevToolsExtensions().hasOwnProperty(extensionName);
-  }
+  extensionInstalled =
+    !!extensionName &&
+    (session.defaultSession as any)
+      .getAllExtensions()
+      .find((e: { name: string }) => e.name === extensionName);
 
   if (!forceDownload && extensionInstalled) {
     return Promise.resolve(IDMap[chromeStoreID]);
@@ -106,37 +98,17 @@ const install = (
   return downloadChromeExtension(chromeStoreID, forceDownload || false).then((extensionFolder) => {
     // Use forceDownload, but already installed
     if (extensionInstalled) {
-      // For Electron >=9.
-      if ((session.defaultSession as any).removeExtension) {
-        const extensionId = (session.defaultSession as any)
-          .getAllExtensions()
-          .find((e: { name: string }) => e.name).id;
-        (session.defaultSession as any).removeExtension(extensionId);
-      } else {
-        BrowserWindow.removeDevToolsExtension(extensionName);
-      }
+      const extensionId = (session.defaultSession as any)
+        .getAllExtensions()
+        .find((e: { name: string }) => e.name).id;
+      (session.defaultSession as any).removeExtension(extensionId);
     }
 
-    // For Electron >=9.
-    if ((session.defaultSession as any).loadExtension) {
-      return (session.defaultSession as any)
-        .loadExtension(extensionFolder, loadExtensionOptions)
-        .then((ext: { name: string }) => {
-          return Promise.resolve(ext.name);
-        });
-    }
-
-    const name = BrowserWindow.addDevToolsExtension(extensionFolder); // eslint-disable-line
-
-    fs.writeFileSync(
-      getIDMapPath(),
-      JSON.stringify(
-        Object.assign(IDMap, {
-          [chromeStoreID]: name,
-        }),
-      ),
-    );
-    return Promise.resolve(name);
+    return (session.defaultSession as any)
+      .loadExtension(extensionFolder, loadExtensionOptions)
+      .then((ext: { name: string }) => {
+        return Promise.resolve(ext.name);
+      });
   });
 };
 
