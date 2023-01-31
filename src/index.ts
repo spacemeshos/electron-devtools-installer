@@ -45,7 +45,7 @@ interface ExtensionOptions {
  */
 const install = (
   extensionReference: ExtensionReference | string | Array<ExtensionReference | string>,
-  options: ExtensionOptions | boolean = {},
+  options: ExtensionOptions | boolean = {}
 ): Promise<string> => {
   // Support old forceDownload syntax
   if (typeof options === 'boolean') {
@@ -55,14 +55,14 @@ const install = (
 
   if (process.type !== 'browser') {
     return Promise.reject(
-      new Error('electron-devtools-installer can only be used from the main process'),
+      new Error('electron-devtools-installer can only be used from the main process')
     );
   }
 
   if (Array.isArray(extensionReference)) {
     return extensionReference.reduce(
       (accum, extension) => accum.then(() => install(extension, options)),
-      Promise.resolve(''),
+      Promise.resolve('')
     );
   }
   let chromeStoreID: string;
@@ -72,15 +72,15 @@ const install = (
     if (!semver.satisfies(electronVersion, extensionReference.electron)) {
       return Promise.reject(
         new Error(
-          `Version of Electron: ${electronVersion} does not match required range ${extensionReference.electron} for extension ${chromeStoreID}`,
-        ), // eslint-disable-line
+          `Version of Electron: ${electronVersion} does not match required range ${extensionReference.electron} for extension ${chromeStoreID}`
+        ) // eslint-disable-line
       );
     }
   } else if (typeof extensionReference === 'string') {
     chromeStoreID = extensionReference;
   } else {
     return Promise.reject(
-      new Error(`Invalid extensionReference passed in: "${extensionReference}"`),
+      new Error(`Invalid extensionReference passed in: "${extensionReference}"`)
     );
   }
   const extensionName = IDMap[chromeStoreID];

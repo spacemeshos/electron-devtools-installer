@@ -9,7 +9,7 @@ const unzip: any = require('unzip-crx-3');
 const downloadChromeExtension = (
   chromeStoreID: string,
   forceDownload?: boolean,
-  attempts = 5,
+  attempts = 5
 ): Promise<string> => {
   const extensionsStore = getPath();
   if (!fs.existsSync(extensionsStore)) {
