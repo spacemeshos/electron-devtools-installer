@@ -29,10 +29,10 @@ const knownExtensions = [
     ...JQUERY_DEBUGGER,
     description: 'jQuery Debugger',
   },
-  {
-    ...ANGULARJS_BATARANG,
-    description: 'AngularJS Batarang',
-  },
+  // {
+  //   ...ANGULARJS_BATARANG,
+  //   description: 'AngularJS Batarang',
+  // },
   {
     ...VUEJS_DEVTOOLS,
     description: 'Vue.js devtools',
@@ -45,10 +45,10 @@ const knownExtensions = [
     ...REDUX_DEVTOOLS,
     description: 'Redux DevTools',
   },
-  {
-    ...CYCLEJS_DEVTOOL,
-    description: 'Cycle.js',
-  },
+  // {
+  //   ...CYCLEJS_DEVTOOL,
+  //   description: 'Cycle.js',
+  // },
   // {
   //   ...APOLLO_DEVELOPER_TOOLS,
   //   description: 'Apollo Client Developer Tools',
