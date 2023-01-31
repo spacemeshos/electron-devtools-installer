@@ -1,4 +1,4 @@
-import { BrowserWindow, session } from 'electron';
+import { session } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as semver from 'semver';
